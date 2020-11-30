@@ -1,0 +1,6 @@
+*.[ao]
+/env3
+*~
+*.log
+token.txt
+config.py
