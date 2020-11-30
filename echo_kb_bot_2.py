@@ -26,6 +26,11 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
 from telegram.ext import Filters
 from telegram.ext import CallbackQueryHandler
+from buttons import BUTTON1_HELP
+from buttons import BUTTON2_TIME
+from buttons import get_base_reply_keyboard
+from telegram import ReplyKeyboardRemove
+
 
 from config import TG_TOKEN
 from development import *
@@ -78,11 +83,12 @@ TOKEN = ''
 CALLBACK_BUTTON1_LEFT = "callback_button1_left"
 CALLBACK_BUTTON2_RIGHT = 'callback_button2_right'
 CALLBACK_BUTTON3_MORE = "callback_button3_more"
+CALLBACK_BUTTON_HIDE_KEYBOARD = "Cпрятать/показать клавиатуру!"
 
-TITLES = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON3_MORE: "Eще"}
+TITLES = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру!",CALLBACK_BUTTON3_MORE: "Eще"}
 
 def get_base_inline_keyboard():
-    Titles = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON3_MORE: "Eще"}
+    Titles = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру", CALLBACK_BUTTON3_MORE: "Eще"}
     keyboard = [
         [InlineKeyboardButton(Titles[CALLBACK_BUTTON1_LEFT], callback_data=CALLBACK_BUTTON1_LEFT),
 #         InlineKeyboardButton("Option ---", calback_data='2'),
@@ -92,7 +98,7 @@ def get_base_inline_keyboard():
         [
          InlineKeyboardButton("Option 4", callback_data='4'),
          InlineKeyboardButton("Option 5", callback_data='5'),
-         InlineKeyboardButton("Option 6", callback_data='6'),
+         InlineKeyboardButton(Titles[CALLBACK_BUTTON_HIDE_KEYBOARD] , callback_data=CALLBACK_BUTTON_HIDE_KEYBOARD ),
         ],
         ]
 #            InlineKeyboardButton(TITLES[CALLBACK_BUTTON2_RIGHT], calback_data=CALLBACK_BUTTON2_RIGHT),
@@ -135,6 +141,10 @@ def keyboard_callback_handler(update, context):
     elif data == CALLBACK_BUTTON3_MORE:
         # Отредактируем текст сообщения, но оставим клавиатуру
         query.edit_message_text(text="Показать предыдущий экран клавиатуры", reply_markup=get_keyboard2())
+    elif data == CALLBACK_BUTTON_HIDE_KEYBOARD:
+        # спрятать клавиатуру
+        # работает только после отправке нового сообщене
+        context.bot.send_message(chat_id=chat_id, text="Спрятать клавиатуру\n\nНажмите /start чтобы вернуть ее обратно", reply_markup=ReplyKeyboardRemove(),)
 
 
 """ Обработчики событий от телеграма """
@@ -142,7 +152,8 @@ def keyboard_callback_handler(update, context):
 
 @debug_requests
 def do_start(update, context ):
-    context.bot.send_message(chat_id=update.message.chat_id, text="Привет! Отправь мне что-нибудь", reply_markup=get_base_inline_keyboard())
+    context.bot.send_message(chat_id=update.message.chat_id, text="Привет! Отправь мне что-нибудь", reply_markup=get_base_reply_keyboard())
+#     context.bot.send_message(chat_id=update.message.chat_id, text="Привет! Отправь мне что-нибудь", reply_markup=get_base_inline_keyboard())
 
     
 @debug_requests
@@ -173,7 +184,7 @@ def any_msg(update, context):
 @debug_requests
 def do_time(update, context):
     """Узнать серверное время"""
-    process = Popen(["date123"], stdout=PIPE)
+    process = Popen(["date"], stdout=PIPE)
     text, error = process.communicate() # подождать результат
     
     if error:
@@ -187,9 +198,17 @@ def do_time(update, context):
 @debug_requests
 def do_echo(update, context):
     chat_id = update.message.chat_id
-    text = "Ваш ID = {}\n\n{}".format(chat_id, update.message.text)
+#    text = "Ваш ID = {}\n\n{}".format(chat_id, update.message.text)
+    text = update.message.text
+    if text == BUTTON1_HELP:
+        return do_help(update=update, context=context)
+    elif text == BUTTON2_TIME:
+        return do_time(update=update, context=context)
+    else:
+        reply_text = "Ваш ID = {}\n\n{}".format(chat_id, text)
+    
 #    context.bot.send_message(chat_id=update.message.chat_id, text=text)
-    context.bot.send_message(chat_id=update.message.chat_id, text=text, reply_markup=get_base_inline_keyboard())
+    context.bot.send_message(chat_id=update.message.chat_id, text=reply_text, reply_markup=get_base_inline_keyboard())
 
 @debug_requests
 def button(update, context):
