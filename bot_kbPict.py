@@ -29,6 +29,7 @@ from telegram.ext import CallbackQueryHandler
 from buttons import BUTTON1_HELP
 from buttons import BUTTON2_TIME
 from buttons import get_base_reply_keyboard
+from buttons import get_my_inline_keyboard
 from telegram import ReplyKeyboardRemove
 
 
@@ -83,12 +84,14 @@ TOKEN = ''
 CALLBACK_BUTTON1_LEFT = "callback_button1_left"
 CALLBACK_BUTTON2_RIGHT = 'callback_button2_right'
 CALLBACK_BUTTON3_MORE = "callback_button3_more"
+CALLBACK_BUTTON4_MY =  "callback_button4_my"
 CALLBACK_BUTTON_HIDE_KEYBOARD = "Cпрятать/показать клавиатуру!"
+CALLBACK_BUTTON_MYTEST = "callback_button_mytest"
 
-TITLES = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру!",CALLBACK_BUTTON3_MORE: "Eще"}
+TITLES = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру!",CALLBACK_BUTTON3_MORE: "Eще", CALLBACK_BUTTON4_MY: "callback_button4_my"}
 
 def get_base_inline_keyboard():
-    Titles = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'send Foto/Отреда', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру", CALLBACK_BUTTON3_MORE: "Eще"}
+    Titles = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'send Foto/Отреда', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру", CALLBACK_BUTTON3_MORE: "Eще", CALLBACK_BUTTON4_MY: "Моя новая клава"}
     keyboard = [
         [InlineKeyboardButton(Titles[CALLBACK_BUTTON1_LEFT], callback_data=CALLBACK_BUTTON1_LEFT),
 #         InlineKeyboardButton("Option ---", calback_data='2'),
@@ -96,7 +99,7 @@ def get_base_inline_keyboard():
          InlineKeyboardButton("Option 3 more", callback_data=CALLBACK_BUTTON3_MORE),
         ],
         [
-         InlineKeyboardButton("Option 4", callback_data='4'),
+         InlineKeyboardButton("CALLBACK_BUTTON4_MY", callback_data=CALLBACK_BUTTON4_MY),
          InlineKeyboardButton("Option 5", callback_data='5'),
          InlineKeyboardButton(Titles[CALLBACK_BUTTON_HIDE_KEYBOARD] , callback_data=CALLBACK_BUTTON_HIDE_KEYBOARD ),
         ],
@@ -125,7 +128,14 @@ def get_keyboard2():
     ]
     return InlineKeyboardMarkup(keyboard)
 
-
+def get_my_inline_keyboard2():
+    Titles = {CALLBACK_BUTTON_MYTEST: "My test Button"}
+    keyboard = [
+        [InlineKeyboardButton(Titles[CALLBACK_BUTTON_MYTEST], callback_data=CALLBACK_BUTTON_MYTEST)]
+    ]
+#    return InlineKeyboardMarkup(keyboard=keyboard, callback_data=BUTTON1_TEST)
+#    return InlineKeyboardMarkup(keyboard=keyboard, resize_keyboard=True,)
+    return InlineKeyboardMarkup(keyboard)
 
 
 @debug_requests
@@ -154,6 +164,11 @@ def keyboard_callback_handler(update: Update, context):
     elif data == CALLBACK_BUTTON3_MORE:
         # Отредактируем текст сообщения, но оставим клавиатуру
         query.edit_message_text(text="Показать предыдущий экран клавиатуры", reply_markup=get_keyboard2())
+    elif data == CALLBACK_BUTTON4_MY:
+        # Отредактируем текст сообщения, но оставим клавиатуру
+        query.edit_message_text(text="Показать мою новую экран клавиатуры", reply_markup=get_my_inline_keyboard2())
+    elif data == CALLBACK_BUTTON_MYTEST:
+        query.edit_message_text(text="Нажата MYTEST кнопка")
     elif data == CALLBACK_BUTTON_HIDE_KEYBOARD:
         # спрятать клавиатуру
         # работает только после отправке нового сообщене
