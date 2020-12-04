@@ -1,6 +1,11 @@
 *.[ao]
+/__pycache__
 /env3
+/env
 *~
 *.log
+*#
+#*
 token.txt
 config.py
+v.bat
