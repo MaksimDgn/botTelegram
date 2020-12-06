@@ -2,11 +2,13 @@ from telegram import KeyboardButton
 from telegram import ReplyKeyboardMarkup
 from telegram import InlineKeyboardMarkup # вся клавиатура вместе
 
-
+BTN_MAIN = "Меню"
 BUTTON1_HELP = "Помощь"
 BUTTON2_TIME = "Время"
 BUTTON1_TEST = "My test Button"
-CALLBACK_BUTTON4_MY =  "callback_button4_my"
+BTN_BACK = "callback_btn_back"
+BTN_FORWARD = "callback_btn_forward"
+
 
 def get_base_reply_keyboard():
     BUTTON1_HELP = "Помощь"
@@ -23,11 +25,23 @@ def get_base_reply_keyboard():
         )
 
 
-def get_my_inline_keyboard():
-    Titles = {CALLBACK_BUTTON4_MY: "My test Button"}
+def get_backForward_reply_keyboard():#👈👉🏻➡️⬅️
+    Titles = {BTN_BACK: "👈⬅️Назад", BTN_FORWARD: "Вперед 👉🏻➡️", BTN_MAIN: "- Меню -"}
     keyboard = [
-        [KeyboardButton(Titles[CALLBACK_BUTTON4_MY], CALLBACK_BUTTON4_MY)]
+        [KeyboardButton(Titles[BTN_BACK]),
+         KeyboardButton(Titles[BTN_FORWARD])],
+        [KeyboardButton(Titles[BTN_MAIN])]
     ]
-#    return InlineKeyboardMarkup(keyboard=keyboard, callback_data=BUTTON1_TEST)
-#    return InlineKeyboardMarkup(keyboard=keyboard, resize_keyboard=True,)
+    return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True,)
+
+
+
+""" Пример Inline клавиатуры
+def get_backForward_reply_keyboard():
+    Titles = {CALLBACK_BTN_BACK: "Назад", CALLBACK_BTN_FORWARD: "Вперед"}
+    keyboard = [
+        [KeyboardButton(Titles[CALLBACK_BTN_FORWARD], CALLBACK_BTN_FORWARD),
+         KeyboardButton(Titles[CALLBACK_BTN_FORWARD], CALLBACK_BTN_FORWARD)]
+    ]
     return InlineKeyboardMarkup(keyboard)
+"""

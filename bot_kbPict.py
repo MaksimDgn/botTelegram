@@ -29,7 +29,7 @@ from telegram.ext import CallbackQueryHandler
 from buttons import BUTTON1_HELP
 from buttons import BUTTON2_TIME
 from buttons import get_base_reply_keyboard
-from buttons import get_my_inline_keyboard
+#from buttons import get_base_inline_keyboard
 from telegram import ReplyKeyboardRemove
 
 
@@ -87,11 +87,17 @@ CALLBACK_BUTTON3_MORE = "callback_button3_more"
 CALLBACK_BUTTON4_MY =  "callback_button4_my"
 CALLBACK_BUTTON_HIDE_KEYBOARD = "Cпрятать/показать клавиатуру!"
 CALLBACK_BUTTON_MYTEST = "callback_button_mytest"
+BTN_BACK = "callback_btn_back"
+BTN_FORWARD = "callback_btn_forward"
+BTN_MAIN = "Меню"
+CALLBACK_BTN_BACK = "callback_btn_back"
+CALLBACK_BTN_FORWARD = "callback_btn_forward"
+CALLBACK_BTN_MAIN = "callback_btn_main"
 
 TITLES = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру!",CALLBACK_BUTTON3_MORE: "Eще", CALLBACK_BUTTON4_MY: "callback_button4_my"}
 
 def get_base_inline_keyboard():
-    Titles = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'send Foto/Отреда', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру", CALLBACK_BUTTON3_MORE: "Eще", CALLBACK_BUTTON4_MY: "Моя новая клава"}
+    Titles = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'send Foto/Отреда', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру", CALLBACK_BUTTON3_MORE: "Eще", CALLBACK_BUTTON4_MY: "Каталог картинок"}
     keyboard = [
         [InlineKeyboardButton(Titles[CALLBACK_BUTTON1_LEFT], callback_data=CALLBACK_BUTTON1_LEFT),
 #         InlineKeyboardButton("Option ---", calback_data='2'),
@@ -99,7 +105,7 @@ def get_base_inline_keyboard():
          InlineKeyboardButton("Option 3 more", callback_data=CALLBACK_BUTTON3_MORE),
         ],
         [
-         InlineKeyboardButton("CALLBACK_BUTTON4_MY", callback_data=CALLBACK_BUTTON4_MY),
+         InlineKeyboardButton(Titles[CALLBACK_BUTTON4_MY], callback_data=CALLBACK_BUTTON4_MY),
          InlineKeyboardButton("Option 5", callback_data='5'),
          InlineKeyboardButton(Titles[CALLBACK_BUTTON_HIDE_KEYBOARD] , callback_data=CALLBACK_BUTTON_HIDE_KEYBOARD ),
         ],
@@ -129,13 +135,25 @@ def get_keyboard2():
     return InlineKeyboardMarkup(keyboard)
 
 def get_my_inline_keyboard2():
-    Titles = {CALLBACK_BUTTON_MYTEST: "My test Button"}
+    Titles = {CALLBACK_BUTTON_MYTEST: "My test Button(Каталог картинок)"}
     keyboard = [
         [InlineKeyboardButton(Titles[CALLBACK_BUTTON_MYTEST], callback_data=CALLBACK_BUTTON_MYTEST)]
     ]
 #    return InlineKeyboardMarkup(keyboard=keyboard, callback_data=BUTTON1_TEST)
 #    return InlineKeyboardMarkup(keyboard=keyboard, resize_keyboard=True,)
     return InlineKeyboardMarkup(keyboard)
+
+
+
+def get_backForward_inlyne_keyboard():#👈👉🏻➡️⬅️
+    Titles = {BTN_BACK: "👈⬅️Назад", BTN_FORWARD: "Вперед 👉🏻➡️", BTN_MAIN: "- Меню -"}
+    keyboard = [
+        [InlineKeyboardButton(Titles[BTN_BACK], callback_data=CALLBACK_BTN_BACK),
+         InlineKeyboardButton(Titles[BTN_FORWARD], callback_data=CALLBACK_BTN_FORWARD)],
+        [InlineKeyboardButton(Titles[BTN_MAIN], callback_data=CALLBACK_BTN_MAIN)]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
 
 
 @debug_requests
@@ -166,9 +184,21 @@ def keyboard_callback_handler(update: Update, context):
         query.edit_message_text(text="Показать предыдущий экран клавиатуры", reply_markup=get_keyboard2())
     elif data == CALLBACK_BUTTON4_MY:
         # Отредактируем текст сообщения, но оставим клавиатуру
-        query.edit_message_text(text="Показать мою новую экран клавиатуры", reply_markup=get_my_inline_keyboard2())
+        query.edit_message_text(text="Это новая экран-клавиатура 👍❤️", reply_markup=get_my_inline_keyboard2())
     elif data == CALLBACK_BUTTON_MYTEST:
-        query.edit_message_text(text="Нажата MYTEST кнопка")
+        # Выводит сообщение, картинку, клавиатуру
+        query.edit_message_text(text="'edit_message_text'\ntext = Нажата MYTEST кнопка")
+        context.bot.send_photo(chat_id=chat_id, photo='https://cdn.fishki.net/upload/post/201406/06/1275531/9c944406a89a61d775c41652fcc7b2a5.jpg')
+        context.bot.send_message(chat_id=chat_id, text='Каталог картинок', reply_markup=get_backForward_inlyne_keyboard())
+        
+    elif data == CALLBACK_BTN_BACK :
+        context.bot.send_photo(chat_id=chat_id, photo='https://img2.pngindir.com/20191029/rjp/transparent-green-text-font-circle-5db7c9c7e47a80.2378616215723258319359.jpg')
+        context.bot.send_message(chat_id=chat_id, text="нажата кнопка 'назад'", reply_markup=get_backForward_inlyne_keyboard())
+        #context.bot.send_message(chat_id=chat_id, text='', reply_markup=get_base_inline_keyboard())
+    elif data == CALLBACK_BTN_FORWARD :
+        context.bot.send_photo(chat_id=chat_id, photo='https://st.depositphotos.com/1168775/1325/i/950/depositphotos_13251648-stock-photo-ok-green-button.jpg')
+        context.bot.send_message(chat_id=chat_id, text="нажата кнопка вперед", reply_markup=get_backForward_inlyne_keyboard())
+        
     elif data == CALLBACK_BUTTON_HIDE_KEYBOARD:
         # спрятать клавиатуру
         # работает только после отправке нового сообщене
@@ -177,6 +207,8 @@ def keyboard_callback_handler(update: Update, context):
 
 """ Обработчики событий от телеграма """
 #    context.bot.send_message(chat_id=update.message.chat_id, text="Привет! Отправь мне что-нибудь", reply_markup=get_base_inline_keyboard())
+
+
 
 
 
@@ -230,15 +262,40 @@ def do_echo(update, context):
     chat_id = update.message.chat_id
 #    text = "Ваш ID = {}\n\n{}".format(chat_id, update.message.text)
     text = update.message.text
-    if text == BUTTON1_HELP:
+    if text == BTN_MAIN:
+       
+        # context.bot.send_message(chat_id=chat_id, text="Спрятать клавиатуру\n\nНажмите /start чтобы вернуть ее обратно", reply_markup=ReplyKeyboardRemove(),)
+        context.bot.send_message(chat_id=update.message.chat_id, text=reply_text, reply_markup=get_base_inline_keyboard())
         return do_help(update=update, context=context)
     elif text == BUTTON2_TIME:
+        reply_text = "Ваш ID = {}\n\n{}".format(chat_id, text)
+        context.bot.send_message(chat_id=update.message.chat_id, text=reply_text, reply_markup=get_base_inline_keyboard())
         return do_time(update=update, context=context)
+    if text == BTN_BACK:
+        print(text)
+        return go_back(update=Update, context=context)
     else:
         reply_text = "Ваш ID = {}\n\n{}".format(chat_id, text)
-    
+        context.bot.send_message(chat_id=update.message.chat_id, text=reply_text, reply_markup=get_base_inline_keyboard())
 #    context.bot.send_message(chat_id=update.message.chat_id, text=text)
-    context.bot.send_message(chat_id=update.message.chat_id, text=reply_text, reply_markup=get_base_inline_keyboard())
+
+
+@debug_requests
+def go_back(update, context):
+    chat_id = update.message.chat_id
+#    text = "Ваш ID = {}\n\n{}".format(chat_id, update.message.text)
+    text = update.message.text
+    print(f'go_back{text}')
+    if text == BTN_BACK:
+        print(f'go_back{text} in BTN_BACK')
+        context.bot.send_photo(chat_id=chat_id, photo='https://img2.pngindir.com/20191029/rjp/transparent-green-text-font-circle-5db7c9c7e47a80.2378616215723258319359.jpg')
+        return to_back(update=Update, context=context)
+    if text == BTN_FORWARD:
+        context.bot.send_photo(chat_id=chat_id, photo='https://st.depositphotos.com/1168775/1325/i/950/depositphotos_13251648-stock-photo-ok-green-button.jpg')
+        return to_forward(update=Update, context=context)
+    else:
+        reply_text = f"нажата {text} клавиша"
+#    context.bot.send_message(chat_id=update.message.chat_id, text=reply_text, reply_markup=get_backForward_reply_keyboard())
 
 @debug_requests
 def button(update, context):
@@ -269,6 +326,8 @@ def main():
     help_handler = CommandHandler("help", do_help)
 #    help_handler = CommandHandler("help", any_msg)
     time_handler = CommandHandler("time", do_time)
+    back_handler = CommandHandler("back", go_back)
+    
     message_handler = MessageHandler(Filters.text, do_echo)
     buttons_handler = CallbackQueryHandler(callback=keyboard_callback_handler, pass_chat_data=True)
     test_buttons_handler = CallbackQueryHandler(button)
@@ -276,9 +335,11 @@ def main():
     updater.dispatcher.add_handler(start_handler)
     updater.dispatcher.add_handler(time_handler)
     updater.dispatcher.add_handler(help_handler)
+    updater.dispatcher.add_handler(back_handler)
     updater.dispatcher.add_handler(message_handler)
     updater.dispatcher.add_handler(buttons_handler)
     updater.dispatcher.add_handler(test_buttons_handler)
+
 
     updater.start_polling()
     updater.idle()
