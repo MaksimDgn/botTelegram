@@ -8,15 +8,19 @@ BUTTON2_TIME = "Время"
 BUTTON1_TEST = "My test Button"
 BTN_BACK = "callback_btn_back"
 BTN_FORWARD = "callback_btn_forward"
+BTN_ABOUT = "О компании"
+BTN_KATALOG = "Каталог"
 
 
 def get_base_reply_keyboard():
     BUTTON1_HELP = "Помощь"
     BUTTON2_TIME = "Время"
+    BTN_ABOUT = "О компании"
+    BTN_KATALOG = "Каталог"
     keyboard = [
         [
-            KeyboardButton(BUTTON1_HELP),
-            KeyboardButton(BUTTON2_TIME),
+            KeyboardButton(BTN_KATALOG),
+            KeyboardButton(BTN_ABOUT),
         ]
     ]
     return ReplyKeyboardMarkup(
