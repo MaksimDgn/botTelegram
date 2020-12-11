@@ -102,6 +102,20 @@ CALLBACK_BTN_LIN = "callback_btn_lin"
 CALLBACK_BTN_LAM = "callback_btn_lam"
 CALLBACK_BTN_PLINT = "callback_btn_plint"
 
+CALLBACK_BTN_NEW_LIN = "callback_btn_new_lin"
+
+CALLBACK_BTN_LAM_0  = "callback_btn_lam_0"
+CALLBACK_BTN_LAM_1  = "callback_btn_lam_1"
+CALLBACK_BTN_LAM_2  = "callback_btn_lam_2"
+CALLBACK_BTN_LAM_3  = "callback_btn_lam_3"
+CALLBACK_BTN_LAM_4  = "callback_btn_lam_4"
+CALLBACK_BTN_LAM_5  = "callback_btn_lam_5"
+CALLBACK_BTN_LAM_6  = "callback_btn_lam_6"
+CALLBACK_BTN_LAM_7  = "callback_btn_lam_7"
+CALLBACK_BTN_LAM_8  = "callback_btn_lam_8"
+CALLBACK_BTN_LAM_9  = "callback_btn_lam_9"
+
+
 TITLES = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'Отредактировать', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру!",CALLBACK_BUTTON3_MORE: "Eще", CALLBACK_BUTTON4_MY: "callback_button4_my"}
 
 tel_1 = '+375 (44) 493-72-91'
@@ -114,9 +128,18 @@ about = """\nБолее 5 лет продаём полы. \n\tМы предла�
 Продаем полы в Лиде, Новогрудоке, Кореличах. Выезжаем в сельскую местность по этим районам.."""
 
 site = 'http://уютдом.бел/'
+menu_bot = """
+ menu bot 
+/start@mrMarinBot \n
+/start - запуск
+/help - помощь
+/time - узнать серверное время
+/button - показать кнопки
+/katalog - Каталог продукции
+"""
 
 """Главная страница"""
-main_page_text = f"Телефон :\n\t{tel_1} \n\t{tel_2}\n\nСайт: {site}\nО компании: {about}"
+main_page_text = f"Телефон :\n\t{tel_1} \n\t{tel_2}\n\nСайт: {site}\nО компании: {about}\n {menu_bot}"
 """кнопки: главной страници"""
 
 """кнопки: Каталог продукции"""
@@ -132,14 +155,14 @@ katalog_txt = """Каталог продукции
 
 def get_katalog_keyboard():
     Titles = {CALLBACK_BTN_NEW:"Новинки",
-               CALLBACK_BTN_MAIN: 'Линолиум',
+               CALLBACK_BTN_LIN: 'Линолиум',
                CALLBACK_BTN_LAM: 'Ламинад',
                CALLBACK_BTN_PLINT: 'Плинтус',
                CALLBACK_BUTTON3_MORE:"Eще",}
     keyboard = [
         [InlineKeyboardButton(Titles[CALLBACK_BTN_NEW], callback_data=CALLBACK_BTN_NEW)],
         [
-            InlineKeyboardButton(Titles[CALLBACK_BTN_MAIN], callback_data=CALLBACK_BTN_MAIN),
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LIN], callback_data=CALLBACK_BTN_LIN),
             InlineKeyboardButton(Titles[CALLBACK_BTN_LAM], callback_data=CALLBACK_BTN_LAM),
             InlineKeyboardButton(Titles[CALLBACK_BTN_PLINT], callback_data=CALLBACK_BTN_PLINT),
         ],
@@ -147,17 +170,96 @@ def get_katalog_keyboard():
         ]
     return InlineKeyboardMarkup(keyboard)
 
+
+
+katalog_lam =[ 
+'Kronostar (РФ)'
+,'Tarkett (РФ)'
+,'Classen (Германия)'
+,'Kronopol (Польша)'
+,'Helvetic Floors (Швейцария)'
+,'SWISS KRONO AG (Швейцария)'    
+,'VIVAFLOOR (РБ)'
+,'Мостовдрев'
+,'Подложка'
+,'Timber']
+
+katalog_lin =[ '«Таркетт» (Сербия / Россия)', '"Beau Flor" (Бельгия)' ,'«Синтерос» (Россия)', '«Juteks» (Россия)', ' «Комитекс Лин» (Россия)','"Polystyl" (Россия).']
+
+def get_linolium_backForward_inlyne_keyboard():
+
+    Titles = {CALLBACK_BTN_NEW_LIN: katalog_lin[0],
+              CALLBACK_BTN_LIN: katalog_lin[1],
+              CALLBACK_BTN_LAM: katalog_lin[2],
+              CALLBACK_BTN_PLINT: katalog_lin[3],
+              CALLBACK_BTN_PLINT: katalog_lin[4],
+              CALLBACK_BTN_PLINT: katalog_lin[5],
+              CALLBACK_BUTTON3_MORE:"Eще",}
+    keyboard = [
+        [InlineKeyboardButton(Titles[CALLBACK_BTN_NEW_LIN], callback_data=CALLBACK_BTN_NEW_LIN),        
+        InlineKeyboardButton(Titles[CALLBACK_BTN_LIN], callback_data=CALLBACK_BTN_LIN)],
+        [
+        InlineKeyboardButton(Titles[CALLBACK_BTN_LAM], callback_data=CALLBACK_BTN_LAM),        
+        InlineKeyboardButton(Titles[CALLBACK_BTN_PLINT], callback_data=CALLBACK_BTN_PLINT )],
+        [
+            InlineKeyboardButton(Titles[CALLBACK_BTN_PLINT], callback_data=CALLBACK_BTN_PLINT ),
+            InlineKeyboardButton(Titles[CALLBACK_BTN_PLINT], callback_data=CALLBACK_BTN_PLINT)],
+
+        [InlineKeyboardButton(Titles[CALLBACK_BUTTON3_MORE], callback_data=CALLBACK_BUTTON3_MORE),],
+        ]    
+    return InlineKeyboardMarkup(keyboard) 
+
+
+def get_laminad_backForward_inlyne_keyboard():
+
+    Titles = {CALLBACK_BTN_LAM_0: katalog_lam[0],
+              CALLBACK_BTN_LAM_1: katalog_lam[1],
+              CALLBACK_BTN_LAM_2: katalog_lam[2],
+              CALLBACK_BTN_LAM_3: katalog_lam[3],
+              CALLBACK_BTN_LAM_4: katalog_lam[4],
+              CALLBACK_BTN_LAM_5: katalog_lam[5],
+              CALLBACK_BTN_LAM_6: katalog_lam[6],
+              CALLBACK_BTN_LAM_7: katalog_lam[7],
+              CALLBACK_BTN_LAM_8: katalog_lam[8],
+              CALLBACK_BTN_LAM_9: katalog_lam[9],
+              CALLBACK_BUTTON3_MORE:"Eще",}
+    keyboard = [
+        [InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_0], callback_data=CALLBACK_BTN_LAM_0),        
+         InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_1], callback_data=CALLBACK_BTN_LAM_1)],
+        [                                                                            
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_2], callback_data=CALLBACK_BTN_LAM_2),
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_3], callback_data=CALLBACK_BTN_LAM_3)],
+        [                                                                               
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_4], callback_data=CALLBACK_BTN_LAM_4),
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_5], callback_data=CALLBACK_BTN_LAM_5)],
+        [                                                                               
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_6], callback_data=CALLBACK_BTN_LAM_6),        
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_7], callback_data=CALLBACK_BTN_LAM_7)],
+        [                                                                               
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_8], callback_data=CALLBACK_BTN_LAM_8),
+            InlineKeyboardButton(Titles[CALLBACK_BTN_LAM_9], callback_data=CALLBACK_BTN_LAM_9)
+        ],
+        # [                                                    
+        #  InlineKeyboardButton(Titles[CALLBACK_BTN_PLINT], callback_data=CALLBACK_BTN_PLINT ),
+        #  InlineKeyboardButton(Titles[CALLBACK_BTN_PLINT], callback_data=CALLBACK_BTN_PLINT)],
+
+        [InlineKeyboardButton(Titles[CALLBACK_BUTTON3_MORE], callback_data=CALLBACK_BUTTON3_MORE),],
+        ]    
+    return InlineKeyboardMarkup(keyboard)
+
+
+
 def get_base_inline_keyboard():
     Titles = {CALLBACK_BUTTON1_LEFT:"Новое сообщение", CALLBACK_BUTTON2_RIGHT: 'send Foto/Отреда', CALLBACK_BUTTON_HIDE_KEYBOARD: "спрятать/показать клавиатуру", CALLBACK_BUTTON3_MORE: "Eще", CALLBACK_BUTTON4_MY: "Каталог картинок"}
     Titles2 = {CALLBACK_BTN_NEW:"Новинки",
-           CALLBACK_BTN_MAIN: 'Линолиум',
+           CALLBACK_BTN_LIN: 'Линолиум',
            CALLBACK_BTN_LAM: 'Ламинад',
            CALLBACK_BTN_PLINT: 'Плинтус',
            CALLBACK_BUTTON3_MORE:"Eще",}
     keyboard = [
         [InlineKeyboardButton(Titles2[CALLBACK_BTN_NEW], callback_data=CALLBACK_BTN_NEW)],
         [
-         InlineKeyboardButton(Titles2[CALLBACK_BTN_MAIN], callback_data=CALLBACK_BTN_MAIN),
+         InlineKeyboardButton(Titles2[CALLBACK_BTN_LIN], callback_data=CALLBACK_BTN_LIN),
          InlineKeyboardButton(Titles2[CALLBACK_BTN_LAM], callback_data=CALLBACK_BTN_LAM),
          InlineKeyboardButton(Titles2[CALLBACK_BTN_PLINT], callback_data=CALLBACK_BTN_PLINT),
         ],
@@ -181,7 +283,7 @@ def get_base_inline_keyboard():
 
 
 def get_keyboard2():
-    Titles = {CALLBACK_BUTTON1_LEFT:"111"}
+    Titles = {CALLBACK_BUTTON1_LEFT:"111 BUTTON1_LEFT"}
     keyboard = [
         [InlineKeyboardButton(Titles[CALLBACK_BUTTON1_LEFT], callback_data=CALLBACK_BUTTON1_LEFT)]
     ]
@@ -251,14 +353,28 @@ def keyboard_callback_handler(update: Update, context):
     elif data == CALLBACK_BTN_FORWARD :
         context.bot.send_photo(chat_id=chat_id, photo='https://st.depositphotos.com/1168775/1325/i/950/depositphotos_13251648-stock-photo-ok-green-button.jpg')
         context.bot.send_message(chat_id=chat_id, text="нажата кнопка вперед", reply_markup=get_backForward_inlyne_keyboard())
-    elif data == CALLBACK_BTN_MAIN:
-        context.bot.send_message(chat_id=chat_id, text=text, reply_markup=get_base_inline_keyboard())
-        
     elif data == CALLBACK_BUTTON_HIDE_KEYBOARD:
         # спрятать клавиатуру
         # работает только после отправке нового сообщене
         context.bot.send_message(chat_id=chat_id, text="Спрятать клавиатуру\n\nНажмите /start чтобы вернуть ее обратно", reply_markup=ReplyKeyboardRemove(),)
 
+    elif data == CALLBACK_BTN_NEW:
+        context.bot.send_photo(chat_id=chat_id, photo='https://st.depositphotos.com/1168775/1325/i/950/depositphotos_13251648-stock-photo-ok-green-button.jpg')
+        context.bot.send_message(chat_id=chat_id, text="нажата кнопка NEW", reply_markup=ReplyKeyboardRemove())
+    elif data == CALLBACK_BTN_MAIN:
+        context.bot.send_message(chat_id=chat_id, text="нажата кнопка MAIN", reply_markup=get_base_inline_keyboard())
+    elif data == CALLBACK_BTN_LIN:
+        context.bot.send_photo(chat_id=chat_id, photo='http://www.santrade.by/IVC/Ravena%201%20931.png')
+       # context.bot.send_message(chat_id=chat_id, text="нажата кнопка Линолиум", reply_markup=get_backForward_inlyne_keyboard())
+        context.bot.send_message(chat_id=chat_id, text="нажата кнопка Линолиум", reply_markup=get_linolium_backForward_inlyne_keyboard())
+    elif data == CALLBACK_BTN_LAM:
+        context.bot.send_photo(chat_id=chat_id, photo='http://www.santrade.by/Kronostar/whitened-oak.png')
+        context.bot.send_message(chat_id=chat_id, text="нажата кнопка Ламинад", reply_markup=get_laminad_backForward_inlyne_keyboard())
+        
+    elif data == CALLBACK_BTN_PLINT:
+        context.bot.send_photo(chat_id=chat_id, photo='https://st.depositphotos.com/1168775/1325/i/950/depositphotos_13251648-stock-photo-ok-green-button.jpg')
+        context.bot.send_message(chat_id=chat_id, text="нажата кнопка Плинтус", reply_markup=get_backForward_inlyne_keyboard())
+        
 
 """ Обработчики событий от телеграма """
 #    context.bot.send_message(chat_id=update.message.chat_id, text="Привет! Отправь мне что-нибудь", reply_markup=get_base_inline_keyboard())
@@ -413,7 +529,3 @@ def main():
 
 if __name__=='__main__':
     main()
-    
-    
-# for i in list:
-#     print(i
